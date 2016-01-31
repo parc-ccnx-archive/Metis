@@ -1,0 +1,12 @@
+# Site settings
+title: Metis CCN Forwarding
+email: ccn@ccnx.org
+description: > # this means to ignore newlines until "baseurl:"
+  The Metis Forwarding Application.
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://ccnx.com" # the base hostname & protocol for your site
+twitter_username: ccn
+github_username:  ccn
+
+# Build settings
+markdown: kramdown
