@@ -306,6 +306,10 @@ _peekMessageLength(MetisUdpListener *udp, int fd, struct sockaddr *peerIpAddress
 
     ssize_t readLength = recvfrom(fd, fixedHeader, metisTlv_FixedHeaderLength(), MSG_PEEK, (struct sockaddr *) peerIpAddress, peerIpAddressLengthPtr);
 
+	if( readLength == -1 ){
+	  return -1;
+	}
+
     if (readLength == metisTlv_FixedHeaderLength()) {
         packetLength = metisTlv_TotalPacketLength(fixedHeader);
     } else {
