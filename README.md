@@ -1,43 +1,103 @@
 Metis
 =======
+A CCNx forwarder
 
-The Metis CCNx Forwarder
-==========
+## Quick Start ##
+```
+$ git clone git@github.com:PARC/Metis.git Metis
+$ mkdir Metis.build
+$ cd Metis.build
+$ cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} ../Metis
+$ make
+$ make test
+$ make install
+```
 
 ## Introduction ##
 
-This is a CCNx forwarder
+Metis is a CCNx Forwarder.  
 
-## Overview ##
+## Using Metis ##
 
-For a full CCNx software distribution please look at the CCNx Distillery
-https://github.com/PARC/CCNx_Distillery
+### Distillery ###
 
-## Dependencies ##
+Metis is part of [CCNx Distillery](https://github.com/PARC/CCNx_Distillery). You may want to get the software via that distribution if you want to work on CCNx.
 
-This library depends on LongBow. 
-- https://github.com/PARC/LongBow
-- https://github.com/PARC/Libparc
-- https://github.com/PARC/Libccnx-common
-- https://github.com/PARC/Libccnx-transport-rta
+### Platforms ###
 
-## Getting Started ##
+Metis has been tested in:
 
-Build and install LongBow by executing
+- Ubuntu 14.04 (x86_64)
+- MacOSX 10.10
+- MacOSX 10.11
+
+Other platforms and architectures may work.
+
+### Dependencies ###
+
+Build dependencies:
+
+- c99 ( clang / gcc )
+- CMake 3.4
+
+Basic dependencies:
+
+- OpenSSL
+- pthreads
+- Libevent
+- [LongBow](https://github.com/PARC/LongBow)
+- [Libparc](https://github.com/PARC/Libparc)
+- [Libccnx-common](https://github.com/PARC/Libccnx-common)
+- [Libccnx-transport-rta](https://github.com/PARC/Libccnx-transport-rta)
+
+
+Documentation dependencies:
+
+- Doxygen
+
+
+### Getting Started ###
+
+Metis is built using cmake. You will need to have CMake 3.4 installed in order to build it.
+
 ```
-mkdir build
-cd build
-cmake ..
-make
-make install
-make test
+Download Metis
+$ git clone git@github.com:PARC/Metis.git Metis
+
+Create build directory
+$ mkdir Metis.build
+$ cd Metis.build
+
+Prepare the build, give an install directory
+$ cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} ../Metis
+
+Compile the software
+$ make
+
+Run unit tests
+$ make test
+
+Install the software
+$ make install
 ```
 
-This will create the `include` and `lib` directories containing the necessary files to compile with LongBow.
+This will place the Metis binaries in the `bin` directory of `${INSTALL_DIR}`.
+
+
+
+### Using Metis ###
+
+Metis is a set of binary executables that are used to run a CCNx forwarder instance. Please refer to the Metis documentation for detailed information.  You can also try the -h flags of the executables
+
+- `metis_daemon -h`
+- `metis_control -h`
 
 ### Contact ###
 
-Please see http://www.ccnx.org/
+- [Metis GitHub](https://github.com/PARC/Metis)
+- [CCNx Website](http://www.ccnx.org/)
+- [CCNx Mailing List](https://www.ccnx.org/mailman/listinfo/ccnx/)
+
 
 ### License ###
 
