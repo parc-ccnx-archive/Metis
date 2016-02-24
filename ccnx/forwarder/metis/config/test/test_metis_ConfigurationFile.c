@@ -130,7 +130,12 @@ LONGBOW_TEST_CASE(Create, metisConfigurationFile_Create_CantRead)
     chmod(template, 0600);
     unlink(template);
 
-    assertNull(cf, "Should have returned null configuration file for non-readable file");
+    uid_t uid = getuid(), euid = geteuid();
+    if (uid <= 0 || uid != euid) {
+	metisConfigurationFile_Release(&cf);
+    } else {
+	assertNull(cf, "Should have returned null configuration file for non-readable file");
+    }
 
     metisForwarder_Destroy(&metis);
     close(fd);
