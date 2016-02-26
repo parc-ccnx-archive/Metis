@@ -142,8 +142,9 @@ Done
 .IP "remove connection" 10 
 Not implemented. 
  
-.IP "remove route" 10 
-Not implemented. 
+.IP "remove route \fIsymbolic\fR \fIprefix\fR" 10 
+Removes a static route from the FIB.  The prefix and interface must match exactly
+for the route to be removed.
  
 .SH "MISC COMMANDS" 
 .IP "quit" 10 

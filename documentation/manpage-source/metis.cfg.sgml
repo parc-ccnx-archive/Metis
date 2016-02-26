@@ -298,10 +298,10 @@ Done
 			</listitem>
 		</varlistentry>
 		<varlistentry>
-			<term>remove route</term>
+      <term>remove route <replaceable class="parameter">symbolic</replaceable> <replaceable class="parameter">prefix</replaceable></term>
 			<listitem>
 				<para>
-					Not implemented.
+					Removes a static route from the FIB.  The prefix and interface must match exactly for the route to be removed.
 				</para>
 			</listitem>
 		</varlistentry>
