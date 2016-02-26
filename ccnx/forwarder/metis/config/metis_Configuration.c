@@ -278,18 +278,52 @@ metisConfiguration_ProcessRegisterPrefix(MetisConfiguration *config, CCNxControl
     return response;
 }
 
+static bool
+_symbolicUnregisterPrefix(MetisConfiguration *config, CPIRouteEntry *route)
+{
+    bool success = false;
+
+    const char *symbolic = cpiRouteEntry_GetSymbolicName(route);
+    unsigned ifidx = metisSymbolicNameTable_Get(config->symbolicNameTable, symbolic);
+    if (ifidx != UINT32_MAX) {
+        cpiRouteEntry_SetInterfaceIndex(route, ifidx);
+        if (metisLogger_IsLoggable(config->logger, MetisLoggerFacility_Config, PARCLogLevel_Debug)) {
+            metisLogger_Log(config->logger, MetisLoggerFacility_Config, PARCLogLevel_Debug, __func__,
+                            "Remove route resolve name '%s' to connid %u",
+                            symbolic, ifidx);
+        }
+
+        success = metisForwarder_RemoveRoute(config->metis, route);
+    } else {
+        if (metisLogger_IsLoggable(config->logger, MetisLoggerFacility_Config, PARCLogLevel_Warning)) {
+            metisLogger_Log(config->logger, MetisLoggerFacility_Config, PARCLogLevel_Warning, __func__,
+                            "Remove route symbolic name '%s' could not be resolved", symbolic);
+        }
+        // this is a failure
+    }
+    return success;
+}
+
 static CCNxControl *
 metisConfiguration_ProcessUnregisterPrefix(MetisConfiguration *config, CCNxControl *control, unsigned ingressId)
 {
     CPIRouteEntry *route = cpiForwarding_RouteFromControlMessage(control);
 
-    if (cpiRouteEntry_GetInterfaceIndex(route) == CPI_CURRENT_INTERFACE) {
-        // We want to use the ingress interface
-        cpiRouteEntry_SetInterfaceIndex(route, ingressId);
+    bool success = false;
+
+    // if it has a symbolic name set the interface index
+    if (cpiRouteEntry_GetSymbolicName(route) != NULL) {
+        success = _symbolicUnregisterPrefix(config, route);
+    } else {
+        if (cpiRouteEntry_GetInterfaceIndex(route) == CPI_CURRENT_INTERFACE) {
+            // We want to use the ingress interface
+            cpiRouteEntry_SetInterfaceIndex(route, ingressId);
+        }
+        success = metisForwarder_RemoveRoute(config->metis, route);
     }
 
     CCNxControl *response = NULL;
-    if (metisForwarder_RemoveRoute(config->metis, route)) {
+    if (success) {
         response = _createAck(config, control, ingressId);
     } else {
         response = _createNack(config, control, ingressId);
