@@ -44,10 +44,13 @@ struct metis_missive {
     unsigned connectionid;
 };
 
+parcObject_Override(MetisMissive, PARCObject,
+                    .isLockable = false);
+
 MetisMissive *
 metisMissive_Create(MetisMissiveType missiveType, unsigned connectionid)
 {
-    MetisMissive *missive = parcObject_Create(MetisMissive);
+    MetisMissive *missive = parcObject_CreateInstance(MetisMissive);
     missive->missiveType = missiveType;
     missive->connectionid = connectionid;
     return missive;
