@@ -248,7 +248,7 @@ LONGBOW_TEST_CASE(Global, metisMessageProcessor_AddOrUpdateRoute)
     MetisForwarder *metis = metisForwarder_Create(NULL);
     MetisMessageProcessor *processor = metisMessageProcessor_Create(metis);
 
-    CCNxName *ccnxName = ccnxName_CreateFromURI("lci:/foo/bar");
+    CCNxName *ccnxName = ccnxName_CreateFromCString("lci:/foo/bar");
     MetisTlvName *tlvName = metisTlvName_CreateFromCCNxName(ccnxName);
     unsigned interfaceIndex = 22;
     CPIAddress *nexthop = NULL;
@@ -274,7 +274,7 @@ LONGBOW_TEST_CASE(Global, metisMessageProcessor_RemoveRoute)
     MetisForwarder *metis = metisForwarder_Create(NULL);
     MetisMessageProcessor *processor = metisMessageProcessor_Create(metis);
 
-    CCNxName *ccnxName = ccnxName_CreateFromURI("lci:/foo/bar");
+    CCNxName *ccnxName = ccnxName_CreateFromCString("lci:/foo/bar");
     MetisTlvName *tlvName = metisTlvName_CreateFromCCNxName(ccnxName);
     unsigned interfaceIndex = 22;
     CPIAddress *nexthop = NULL;
@@ -1089,7 +1089,7 @@ LONGBOW_TEST_CASE(Local, metisMessageProcessor_ReceiveInterest_InFib)
 
     // ----- Add Route
     CCNxName *ccnxNameToAdd =
-        ccnxName_CreateFromURI("lci:/2=hello/0xF000=ouch");
+        ccnxName_CreateFromCString("lci:/2=hello/0xF000=ouch");
     unsigned interfaceIndex_1 = 22;
     CPIAddress *nexthop = NULL;
     struct timeval *lifetime = NULL;
@@ -1319,7 +1319,7 @@ LONGBOW_TEST_CASE(Local, metisMessageProcessor_ForwardViaFib_IsNotInFib)
 
     // ----- Add
     CCNxName *ccnxNameToAdd =
-        ccnxName_CreateFromURI("lci:/2=hello/0xF000=ouch");
+        ccnxName_CreateFromCString("lci:/2=hello/0xF000=ouch");
 
     unsigned interfaceIndex_1 = 22;
     CPIAddress *nexthop = NULL;
@@ -1356,7 +1356,7 @@ LONGBOW_TEST_CASE(Local, metisMessageProcessor_ForwardViaFib_IsInFib_EmptyEgress
 
     // ----- Add Route
     CCNxName *ccnxNameToAdd =
-        ccnxName_CreateFromURI("lci:/2=hello/0xF000=ouch");
+        ccnxName_CreateFromCString("lci:/2=hello/0xF000=ouch");
     unsigned interfaceIndex_1 = 22;
     CPIAddress *nexthop = NULL;
     struct timeval *lifetime = NULL;

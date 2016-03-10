@@ -156,7 +156,7 @@ LONGBOW_TEST_CASE(Global, metisTlvName_Create_Destroy)
 LONGBOW_TEST_CASE(Global, metisTlvName_CreateFromCCNxName)
 {
     char uri[] = "lci:/2=hello/0xF000=ouch/0xF001=%01%FF";
-    CCNxName *ccnxName = ccnxName_CreateFromURI(uri);
+    CCNxName *ccnxName = ccnxName_CreateFromCString(uri);
 
     MetisTlvName *truth = metisTlvName_Create(encoded_name, sizeof(encoded_name));
     MetisTlvName *name = metisTlvName_CreateFromCCNxName(ccnxName);
@@ -172,7 +172,7 @@ LONGBOW_TEST_CASE(Global, metisTlvName_CreateFromCCNxName)
 LONGBOW_TEST_CASE(Global, metisTlvName_CreateFromCCNxName_DefaultRoute)
 {
     char uri[] = "lci:/";
-    CCNxName *ccnxName = ccnxName_CreateFromURI(uri);
+    CCNxName *ccnxName = ccnxName_CreateFromCString(uri);
 
     MetisTlvName *truth = metisTlvName_Create(default_route_name, sizeof(default_route_name));
     MetisTlvName *name = metisTlvName_CreateFromCCNxName(ccnxName);
@@ -224,16 +224,16 @@ compareWrapper(void *a, void *b)
 
 LONGBOW_TEST_CASE(Global, metisTlvName_Compare)
 {
-    CCNxName *basename = ccnxName_CreateFromURI("lci:/middle/of/6=the");
-    CCNxName *equal_1 = ccnxName_CreateFromURI("lci:/middle/of/6=the");
-    CCNxName *defaultRoute = ccnxName_CreateFromURI("lci:/");
-    CCNxName *lesser_by_count = ccnxName_CreateFromURI("lci:/middle/of");
-    CCNxName *lesser_by_value = ccnxName_CreateFromURI("lci:/middle/of/6=th");
-    CCNxName *lesser_by_type_2 = ccnxName_CreateFromURI("lci:/middle/of/2=the");
-    CCNxName *greater_by_count = ccnxName_CreateFromURI("lci:/middle/of/the/road");
-    CCNxName *greater_by_type = ccnxName_CreateFromURI("lci:/middle/of/7=the");
-    CCNxName *greater_by_value = ccnxName_CreateFromURI("lci:/middle/of/the/town");
-    CCNxName *greater_2 = ccnxName_CreateFromURI("lci:/nox/arcana/occulta");
+    CCNxName *basename = ccnxName_CreateFromCString("lci:/middle/of/6=the");
+    CCNxName *equal_1 = ccnxName_CreateFromCString("lci:/middle/of/6=the");
+    CCNxName *defaultRoute = ccnxName_CreateFromCString("lci:/");
+    CCNxName *lesser_by_count = ccnxName_CreateFromCString("lci:/middle/of");
+    CCNxName *lesser_by_value = ccnxName_CreateFromCString("lci:/middle/of/6=th");
+    CCNxName *lesser_by_type_2 = ccnxName_CreateFromCString("lci:/middle/of/2=the");
+    CCNxName *greater_by_count = ccnxName_CreateFromCString("lci:/middle/of/the/road");
+    CCNxName *greater_by_type = ccnxName_CreateFromCString("lci:/middle/of/7=the");
+    CCNxName *greater_by_value = ccnxName_CreateFromCString("lci:/middle/of/the/town");
+    CCNxName *greater_2 = ccnxName_CreateFromCString("lci:/nox/arcana/occulta");
 
     void *equivalent[] = { equal_1, NULL };
     void *lesser[] = { defaultRoute, lesser_by_count, lesser_by_type_2, lesser_by_value, NULL };
@@ -288,7 +288,7 @@ LONGBOW_TEST_CASE(Global, metisTlvName_Compare)
 
 LONGBOW_TEST_CASE(Global, metisTlvName_Compare_DefaultRoute)
 {
-    CCNxName *defaultRoute = ccnxName_CreateFromURI("lci:/");
+    CCNxName *defaultRoute = ccnxName_CreateFromCString("lci:/");
     MetisTlvName *metisDefaultRoute = metisTlvName_CreateFromCCNxName(defaultRoute);
 
     // THis name cannot be constructed via CCNxName, so do it as a byte array

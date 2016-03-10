@@ -96,7 +96,7 @@ LONGBOW_TEST_CASE(Global, metisFib_AddOrUpdate_Add)
     MetisFIB *fib = metisFIB_Create(logger);
     metisLogger_Release(&logger);
 
-    CCNxName *ccnxName = ccnxName_CreateFromURI("lci:/foo/bar");
+    CCNxName *ccnxName = ccnxName_CreateFromCString("lci:/foo/bar");
     MetisTlvName *tlvName = metisTlvName_CreateFromCCNxName(ccnxName);
     unsigned interfaceIndex = 22;
     CPIAddress *nexthop = NULL;
@@ -127,7 +127,7 @@ LONGBOW_TEST_CASE(Global, metisFib_AddOrUpdate_Update)
     MetisFIB *fib = metisFIB_Create(logger);
     metisLogger_Release(&logger);
 
-    CCNxName *ccnxName = ccnxName_CreateFromURI("lci:/foo/bar");
+    CCNxName *ccnxName = ccnxName_CreateFromCString("lci:/foo/bar");
     MetisTlvName *tlvName = metisTlvName_CreateFromCCNxName(ccnxName);
     unsigned interfaceIndex_1 = 22;
     CPIAddress *nexthop = NULL;
@@ -183,7 +183,7 @@ LONGBOW_TEST_CASE(Global, metisFib_Match_Exists)
     MetisLogger *logger = metisLogger_Create(reporter, parcClock_Wallclock());
     parcLogReporter_Release(&reporter);
     MetisFIB *fib = metisFIB_Create(logger);
-    CCNxName *ccnxNameToAdd = ccnxName_CreateFromURI("lci:/2=hello/0xF000=ouch");
+    CCNxName *ccnxNameToAdd = ccnxName_CreateFromCString("lci:/2=hello/0xF000=ouch");
     MetisMessage *interest = metisMessage_CreateFromArray(metisTestDataV0_InterestWithName, sizeof(metisTestDataV0_InterestWithName), 1, 2, logger);
     metisLogger_Release(&logger);
 
@@ -223,8 +223,8 @@ LONGBOW_TEST_CASE(Global, metisFib_Match_ExcludeIngress)
     parcLogReporter_Release(&reporter);
     MetisFIB *fib = metisFIB_Create(logger);
 
-    CCNxName *nameFoo = ccnxName_CreateFromURI("lci:/foo");
-    CCNxName *nameFooBar = ccnxName_CreateFromURI("lci:/foo/bar");
+    CCNxName *nameFoo = ccnxName_CreateFromCString("lci:/foo");
+    CCNxName *nameFooBar = ccnxName_CreateFromCString("lci:/foo/bar");
 
     uint8_t encodedInterest[] = {
         0x01, 0x00, 0x00,   37, // ver = 1, type = interest, length = 37
@@ -286,7 +286,7 @@ LONGBOW_TEST_CASE(Global, metisFib_Match_NotExists)
     MetisLogger *logger = metisLogger_Create(reporter, parcClock_Wallclock());
     parcLogReporter_Release(&reporter);
     MetisFIB *fib = metisFIB_Create(logger);
-    CCNxName *ccnxNameToAdd = ccnxName_CreateFromURI("lci:/2=hello/0xF000=ouch");
+    CCNxName *ccnxNameToAdd = ccnxName_CreateFromCString("lci:/2=hello/0xF000=ouch");
 
     MetisMessage *interest = metisMessage_CreateFromArray(metisTestDataV0_InterestWithOtherName, sizeof(metisTestDataV0_InterestWithOtherName), 1, 2, logger);
     metisLogger_Release(&logger);
@@ -326,8 +326,8 @@ LONGBOW_TEST_CASE(Global, metisFib_Remove_NoEntry)
     MetisFIB *fib = metisFIB_Create(logger);
     metisLogger_Release(&logger);
 
-    CCNxName *ccnxNameToAdd = ccnxName_CreateFromURI("lci:/foo/bar");
-    CCNxName *ccnxNameToRemove = ccnxName_CreateFromURI("lci:/baz");
+    CCNxName *ccnxNameToAdd = ccnxName_CreateFromCString("lci:/foo/bar");
+    CCNxName *ccnxNameToRemove = ccnxName_CreateFromCString("lci:/baz");
     MetisTlvName *tlvNameToCheck = metisTlvName_CreateFromCCNxName(ccnxNameToAdd);
     unsigned interfaceIndex_1 = 22;
     CPIAddress *nexthop = NULL;
@@ -366,8 +366,8 @@ LONGBOW_TEST_CASE(Global, metisFib_Remove_ExistsNotLast)
     MetisFIB *fib = metisFIB_Create(logger);
     metisLogger_Release(&logger);
 
-    CCNxName *ccnxNameToAdd = ccnxName_CreateFromURI("lci:/foo/bar");
-    CCNxName *ccnxNameToRemove = ccnxName_CreateFromURI("lci:/foo/bar");
+    CCNxName *ccnxNameToAdd = ccnxName_CreateFromCString("lci:/foo/bar");
+    CCNxName *ccnxNameToRemove = ccnxName_CreateFromCString("lci:/foo/bar");
     MetisTlvName *tlvNameToCheck = metisTlvName_CreateFromCCNxName(ccnxNameToAdd);
     unsigned interfaceIndex_1 = 11;
     unsigned interfaceIndex_2 = 22;
@@ -414,8 +414,8 @@ LONGBOW_TEST_CASE(Global, metisFib_Remove_ExistsIsLast)
     MetisFIB *fib = metisFIB_Create(logger);
     metisLogger_Release(&logger);
 
-    CCNxName *ccnxNameToAdd = ccnxName_CreateFromURI("lci:/foo/bar");
-    CCNxName *ccnxNameToRemove = ccnxName_CreateFromURI("lci:/foo/bar");
+    CCNxName *ccnxNameToAdd = ccnxName_CreateFromCString("lci:/foo/bar");
+    CCNxName *ccnxNameToRemove = ccnxName_CreateFromCString("lci:/foo/bar");
     MetisTlvName *tlvNameToCheck = metisTlvName_CreateFromCCNxName(ccnxNameToAdd);
     unsigned interfaceIndex_1 = 22;
     CPIAddress *nexthop = NULL;
@@ -450,8 +450,8 @@ LONGBOW_TEST_CASE(Global, metisFIB_Length)
     parcLogReporter_Release(&reporter);
     MetisFIB *fib = metisFIB_Create(logger);
 
-    //    CCNxName *ccnxNameToAdd = ccnxName_CreateFromURI("lci:/%02=hello/%F0%00=ouch");
-    CCNxName *ccnxNameToAdd = ccnxName_CreateFromURI("lci:/2=hello/0xF000=ouch");
+    //    CCNxName *ccnxNameToAdd = ccnxName_CreateFromCString("lci:/%02=hello/%F0%00=ouch");
+    CCNxName *ccnxNameToAdd = ccnxName_CreateFromCString("lci:/2=hello/0xF000=ouch");
     MetisMessage *interest = metisMessage_CreateFromArray(metisTestDataV0_InterestWithName, sizeof(metisTestDataV0_InterestWithName), 1, 2, logger);
     metisLogger_Release(&logger);
 
@@ -502,7 +502,7 @@ LONGBOW_TEST_FIXTURE_TEARDOWN(Local)
 
 LONGBOW_TEST_CASE(Local, _hashTableFunction_FibEntryDestroyer)
 {
-    CCNxName *ccnxName = ccnxName_CreateFromURI("lci:/foo/bar");
+    CCNxName *ccnxName = ccnxName_CreateFromCString("lci:/foo/bar");
     MetisTlvName *tlvName = metisTlvName_CreateFromCCNxName(ccnxName);
     MetisFibEntry *fibEntry = metisFibEntry_Create(tlvName);
 
@@ -515,7 +515,7 @@ LONGBOW_TEST_CASE(Local, _hashTableFunction_FibEntryDestroyer)
 
 LONGBOW_TEST_CASE(Local, _hashTableFunction_TlvNameDestroyer)
 {
-    CCNxName *ccnxName = ccnxName_CreateFromURI("lci:/foo/bar");
+    CCNxName *ccnxName = ccnxName_CreateFromCString("lci:/foo/bar");
     MetisTlvName *tlvName = metisTlvName_CreateFromCCNxName(ccnxName);
 
     _hashTableFunction_TlvNameDestroyer((void **) &tlvName);
@@ -526,7 +526,7 @@ LONGBOW_TEST_CASE(Local, _hashTableFunction_TlvNameDestroyer)
 
 LONGBOW_TEST_CASE(Local, _metisFIB_CreateFibEntry)
 {
-    CCNxName *ccnxName = ccnxName_CreateFromURI("lci:/foo/bar");
+    CCNxName *ccnxName = ccnxName_CreateFromCString("lci:/foo/bar");
     MetisTlvName *tlvName = metisTlvName_CreateFromCCNxName(ccnxName);
     PARCLogReporter *reporter = parcLogReporterTextStdout_Create();
     MetisLogger *logger = metisLogger_Create(reporter, parcClock_Wallclock());

@@ -167,8 +167,7 @@ setupUdp(void)
     printf("receiver connection id = %u\n", testNotifierData.connectionid);
 
     // Add a FIB entry out the receiver connection
-    CCNxName *ccnxNameToAdd =
-        ccnxName_CreateFromURI("lci:/2=hello/0xF000=ouch");
+    CCNxName *ccnxNameToAdd = ccnxName_CreateFromCString("lci:/2=hello/0xF000=ouch");
     CPIRouteEntry *routeAdd = cpiRouteEntry_Create(ccnxNameToAdd, receiverConnectionId, NULL, cpiNameRouteProtocolType_STATIC, cpiNameRouteType_LONGEST_MATCH, NULL, 1);
     metisForwarder_AddOrUpdateRoute(globalState.metis, routeAdd);
     cpiRouteEntry_Destroy(&routeAdd);

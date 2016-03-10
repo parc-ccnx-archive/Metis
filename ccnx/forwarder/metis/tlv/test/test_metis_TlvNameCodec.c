@@ -129,8 +129,8 @@ LONGBOW_TEST_CASE(Global, tlvName_Decode_0_Length_Segment)
     // skip the two 0xFF bytes
     // name = "lci:/%02=abcd"
     CCNxName *test = metisTlvNameCodec_Decode(buffer, 5, 9);
-//    CCNxName *truth = ccnxName_CreateFromURI("lci:/%02=");
-    CCNxName *truth = ccnxName_CreateFromURI("lci:/2=");
+//    CCNxName *truth = ccnxName_CreateFromCString("lci:/%02=");
+    CCNxName *truth = ccnxName_CreateFromCString("lci:/2=");
     char *nameString = ccnxName_ToString(test);
 
     assertTrue(ccnxName_Equals(truth, test), "Names not equal, got %s", nameString);
@@ -153,8 +153,8 @@ LONGBOW_TEST_CASE(Global, tlvName_Decode_Good)
     // name = "lci:/%02=abcd"
     CCNxName *test = metisTlvNameCodec_Decode(buffer, 5, 13);
 
-//    CCNxName *truth = ccnxName_CreateFromURI("lci:/%02=abcd");
-    CCNxName *truth = ccnxName_CreateFromURI("lci:/2=abcd");
+//    CCNxName *truth = ccnxName_CreateFromCString("lci:/%02=abcd");
+    CCNxName *truth = ccnxName_CreateFromCString("lci:/2=abcd");
     char *nameString = ccnxName_ToString(test);
 
     assertTrue(ccnxName_Equals(truth, test), "Names not equal, got %s", nameString);

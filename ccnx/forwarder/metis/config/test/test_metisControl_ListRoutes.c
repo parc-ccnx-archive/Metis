@@ -131,7 +131,7 @@ customWriteReadResponse(void *userdata, CCNxMetaMessage *messageToWrite)
 {
     CPIRouteEntryList *routeEntryList = cpiRouteEntryList_Create();
     CPIAddress *nexthop = cpiAddress_CreateFromInterface(10);
-    CPIRouteEntry *route = cpiRouteEntry_Create(ccnxName_CreateFromURI("lci:/foo"),
+    CPIRouteEntry *route = cpiRouteEntry_Create(ccnxName_CreateFromCString("lci:/foo"),
                                                 1,
                                                 nexthop,
                                                 cpiNameRouteProtocolType_STATIC,
