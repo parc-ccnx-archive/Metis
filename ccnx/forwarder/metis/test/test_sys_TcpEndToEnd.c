@@ -158,7 +158,7 @@ setupTcp(void)
 
     // Add a FIB entry out the receiver connection
     CCNxName *ccnxNameToAdd =
-        ccnxName_CreateFromURI("lci:/2=hello/0xF000=ouch");
+        ccnxName_CreateFromCString("lci:/2=hello/0xF000=ouch");
 
     CPIRouteEntry *routeAdd = cpiRouteEntry_Create(ccnxNameToAdd, receiverConnectionId, NULL, cpiNameRouteProtocolType_STATIC, cpiNameRouteType_LONGEST_MATCH, NULL, 1);
     metisForwarder_AddOrUpdateRoute(globalState.metis, routeAdd);

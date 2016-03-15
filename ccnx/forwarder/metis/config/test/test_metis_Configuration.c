@@ -204,7 +204,7 @@ LONGBOW_TEST_CASE(Global, metisConfiguration_Receive)
     MetisIoOperations *ops = _addIngressMockConnection(metis, mockConnectionId);
     MockIoOperationsData *data = metisIoOperations_GetClosure(ops);
 
-    CCNxName *prefix = ccnxName_CreateFromURI("lci:/foo");
+    CCNxName *prefix = ccnxName_CreateFromCString("lci:/foo");
     CPIRouteEntry *routeEntry = cpiRouteEntry_Create(prefix, mockConnectionId, NULL,
                                                      cpiNameRouteProtocolType_STATIC,
                                                      cpiNameRouteType_LONGEST_MATCH, NULL, 4);
@@ -336,7 +336,7 @@ LONGBOW_TEST_CASE(Local, metisConfiguration_ProcessRegisterPrefix)
     // Add a connection to apply the route to
     unsigned mockConnectionId = 7000;
 
-    CCNxName *prefix = ccnxName_CreateFromURI("lci:/foo");
+    CCNxName *prefix = ccnxName_CreateFromCString("lci:/foo");
     CPIRouteEntry *routeEntry = cpiRouteEntry_Create(prefix, mockConnectionId, NULL, cpiNameRouteProtocolType_STATIC, cpiNameRouteType_LONGEST_MATCH, NULL, 4);
     CCNxControl *request = ccnxControl_CreateAddRouteRequest(routeEntry);
     cpiRouteEntry_Destroy(&routeEntry);
@@ -368,7 +368,7 @@ LONGBOW_TEST_CASE(Local, metisConfiguration_ProcessRegisterPrefix_Symbolic)
     // hack in the symbolic name because _addIngressMockConnection does not do that
     metisSymbolicNameTable_Add(metisForwarder_GetConfiguration(metis)->symbolicNameTable, "foo0", mockConnectionId);
 
-    CCNxName *prefix = ccnxName_CreateFromURI("lci:/foo");
+    CCNxName *prefix = ccnxName_CreateFromCString("lci:/foo");
     CPIRouteEntry *routeEntry = cpiRouteEntry_CreateSymbolic(prefix, "foo0", cpiNameRouteProtocolType_STATIC, cpiNameRouteType_LONGEST_MATCH, NULL, 4);
     CCNxControl *request = ccnxControl_CreateAddRouteRequest(routeEntry);
     cpiRouteEntry_Destroy(&routeEntry);
@@ -403,7 +403,7 @@ LONGBOW_TEST_CASE(Local, metisConfiguration_ProcessRegistrationList)
     unsigned mockup_id = 7;
 
     // Add a route to the forwarding table
-    CCNxName *prefix = ccnxName_CreateFromURI("lci:/pancakes/for/all");
+    CCNxName *prefix = ccnxName_CreateFromCString("lci:/pancakes/for/all");
     CPIRouteEntry *route = cpiRouteEntry_Create(prefix, 3, NULL, cpiNameRouteProtocolType_STATIC, cpiNameRouteType_LONGEST_MATCH, NULL, 2);
     metisForwarder_AddOrUpdateRoute(metis, route);
     cpiRouteEntry_Destroy(&route);

@@ -194,13 +194,13 @@ LONGBOW_TEST_CASE(Global, metisControlState_WriteRead)
     char hello[] = "hello";
     MetisControlState *state = metisControlState_Create(hello, _testWriteRead);
 
-    CCNxName *appleName = ccnxName_CreateFromURI("lci:/apple");
+    CCNxName *appleName = ccnxName_CreateFromCString("lci:/apple");
     CCNxInterest *appleInterest = ccnxInterest_CreateSimple(appleName);
     _testReadMessage = ccnxMetaMessage_CreateFromInterest(appleInterest);
     ccnxInterest_Release(&appleInterest);
     ccnxName_Release(&appleName);
 
-    CCNxName *pieName = ccnxName_CreateFromURI("lci:/pie");
+    CCNxName *pieName = ccnxName_CreateFromCString("lci:/pie");
     CCNxInterest *pieInterest = ccnxInterest_CreateSimple(pieName);
     CCNxMetaMessage *writeMessage = ccnxMetaMessage_CreateFromInterest(pieInterest);;
     ccnxInterest_Release(&pieInterest);

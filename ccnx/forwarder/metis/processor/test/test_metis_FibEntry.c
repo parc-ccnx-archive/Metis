@@ -79,7 +79,7 @@ LONGBOW_TEST_FIXTURE_TEARDOWN(Global)
 
 LONGBOW_TEST_CASE(Global, metisFibEntry_AddNexthop)
 {
-    CCNxName *ccnxName = ccnxName_CreateFromURI("lci:/foo/bar");
+    CCNxName *ccnxName = ccnxName_CreateFromCString("lci:/foo/bar");
     MetisTlvName *tlvName = metisTlvName_CreateFromCCNxName(ccnxName);
     MetisFibEntry *fibEntry = metisFibEntry_Create(tlvName);
 
@@ -97,7 +97,7 @@ LONGBOW_TEST_CASE(Global, metisFibEntry_AddNexthop)
 
 LONGBOW_TEST_CASE(Global, metisFibEntry_Create_Destroy)
 {
-    CCNxName *ccnxName = ccnxName_CreateFromURI("lci:/foo/bar");
+    CCNxName *ccnxName = ccnxName_CreateFromCString("lci:/foo/bar");
     MetisTlvName *tlvName = metisTlvName_CreateFromCCNxName(ccnxName);
 
     size_t beforeMemory = parcMemory_Outstanding();
@@ -113,7 +113,7 @@ LONGBOW_TEST_CASE(Global, metisFibEntry_Create_Destroy)
 
 LONGBOW_TEST_CASE(Global, metisFibEntry_GetNexthops)
 {
-    CCNxName *ccnxName = ccnxName_CreateFromURI("lci:/foo/bar");
+    CCNxName *ccnxName = ccnxName_CreateFromCString("lci:/foo/bar");
     MetisTlvName *tlvName = metisTlvName_CreateFromCCNxName(ccnxName);
     MetisFibEntry *fibEntry = metisFibEntry_Create(tlvName);
 
@@ -130,7 +130,7 @@ LONGBOW_TEST_CASE(Global, metisFibEntry_GetNexthops)
 
 LONGBOW_TEST_CASE(Global, metisFibEntry_NexthopCount)
 {
-    CCNxName *ccnxName = ccnxName_CreateFromURI("lci:/foo/bar");
+    CCNxName *ccnxName = ccnxName_CreateFromCString("lci:/foo/bar");
     MetisTlvName *tlvName = metisTlvName_CreateFromCCNxName(ccnxName);
     MetisFibEntry *fibEntry = metisFibEntry_Create(tlvName);
 
@@ -146,7 +146,7 @@ LONGBOW_TEST_CASE(Global, metisFibEntry_NexthopCount)
 
 LONGBOW_TEST_CASE(Global, metisFibEntry_RemoveNexthop)
 {
-    CCNxName *ccnxName = ccnxName_CreateFromURI("lci:/foo/bar");
+    CCNxName *ccnxName = ccnxName_CreateFromCString("lci:/foo/bar");
     MetisTlvName *tlvName = metisTlvName_CreateFromCCNxName(ccnxName);
     MetisFibEntry *fibEntry = metisFibEntry_Create(tlvName);
 

@@ -171,7 +171,7 @@ _commonSetup(const LongBowTestCase *testCase)
 
     // Add a FIB entry out the receiver connection (testNotifierData.connectionid will be set to the "fake1" connection id
     // because it was the last thing to get a missive sent)
-    CCNxName *ccnxNameToAdd = ccnxName_CreateFromURI("lci:/2=hello/0xF000=ouch");
+    CCNxName *ccnxNameToAdd = ccnxName_CreateFromCString("lci:/2=hello/0xF000=ouch");
     CPIRouteEntry *routeAdd = cpiRouteEntry_Create(ccnxNameToAdd, testNotifierData.connectionid, NULL, cpiNameRouteProtocolType_STATIC, cpiNameRouteType_LONGEST_MATCH, NULL, 1);
     metisForwarder_AddOrUpdateRoute(data->metis, routeAdd);
     cpiRouteEntry_Destroy(&routeAdd);

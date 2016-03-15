@@ -148,7 +148,7 @@ _metisControlAddRoute_Execute(MetisCommandParser *parser, MetisCommandOps *ops, 
             return MetisCommandReturn_Failure;
         }
 
-        CCNxName *prefix = ccnxName_CreateFromURI(prefixString);
+        CCNxName *prefix = ccnxName_CreateFromCString(prefixString);
         if (prefix == NULL) {
             printf("ERROR: could not parse prefix '%s'\n", prefixString);
             return MetisCommandReturn_Failure;

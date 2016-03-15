@@ -183,7 +183,7 @@ LONGBOW_TEST_CASE(Global, tcpTunnel)
     // ===============================================
     /* 4) setup route to /foo from a to b */
 
-    CCNxName *ccnxName = ccnxName_CreateFromURI("lci:/2=hello");
+    CCNxName *ccnxName = ccnxName_CreateFromCString("lci:/2=hello");
     CPIRouteEntry *route = cpiRouteEntry_Create(ccnxName, ops->getConnectionId(ops), NULL, cpiNameRouteProtocolType_STATIC, cpiNameRouteType_LONGEST_MATCH, NULL, 1);
     bool success = metisForwarder_AddOrUpdateRoute(metis_a, route);
     cpiRouteEntry_Destroy(&route);
@@ -236,7 +236,7 @@ LONGBOW_TEST_CASE(Global, tcpTunnel)
     // ===============================================
     /* 7) Setup route to /foo from metis B to client 2. */
 
-    ccnxName = ccnxName_CreateFromURI("lci:/2=hello");
+    ccnxName = ccnxName_CreateFromCString("lci:/2=hello");
     route = cpiRouteEntry_Create(ccnxName, client2_ConnectionId, NULL, cpiNameRouteProtocolType_STATIC, cpiNameRouteType_LONGEST_MATCH, NULL, 1);
     success = metisForwarder_AddOrUpdateRoute(metis_b, route);
     cpiRouteEntry_Destroy(&route);

@@ -6,6 +6,12 @@ set(METIS_BASE_HEADERS
 	metis_About.h 
 	)
 
+set(METIS_BASE_SOURCE
+	metis_About.c
+	)
+	
+source_group(core FILES ${METIS_BASE_HEADERS} ${METIS_BASE_SOURCE})
+
 set(METIS_CONFIG_HEADERS
 	config/metis_CommandOps.h 
 	config/metis_CommandParser.h 
@@ -36,89 +42,7 @@ set(METIS_CONFIG_HEADERS
 	config/metis_WebInterface.h 
 	)
 
-set(METIS_CONTENT_STORE_HEADERS
-	content_store/metis_ContentStoreEntry.h 
-	content_store/metis_ContentStoreInterface.h	
-	content_store/metis_LRUContentStore.h	
-	content_store/metis_TimeOrderedList.h	
-	content_store/metis_LruList.h	
-	)
-
-set(METIS_CORE_HEADERS
-	core/metis_ConnectionManager.h 
-	core/metis_Ticks.h 
-	core/metis_ConnectionList.h 
-	core/metis_ConnectionTable.h 
-	core/metis_Connection.h 
-	core/metis_Forwarder.h 
-	core/metis_Logger.h 
-	core/metis_Dispatcher.h 
-	core/metis_Message.h 
-	core/metis_MessagePacketType.h 
-	core/metis_NumberSet.h 
-	core/metis_StreamBuffer.h 
-	core/metis_ThreadedForwarder.h 
-	core/metis_System.h 
-	)
-
-set(METIS_IO_HEADERS
-	io/metis_HopByHopFragmenter.h 
-	io/metis_EtherConnection.h 
-	io/metis_TcpTunnel.h 
-	io/metis_AddressPair.h 
-	io/metis_IoOperations.h 
-	io/metis_Listener.h 
-	io/metis_ListenerSet.h 
-	io/metis_TcpListener.h 
-	io/metis_UdpTunnel.h 
-	io/metis_UdpConnection.h 
-	io/metis_UdpListener.h 
-	io/metis_EtherListener.h 
-	io/metis_GenericEther.h 
-	io/metis_LocalListener.h 
-	io/metis_StreamConnection.h 
-	io/metis_IPMulticastListener.h 
-	io/metis_Ethernet.h 
-	)
-
-set(METIS_MESSENGER_HEADERS
-	messenger/metis_MissiveDeque.h 
-	messenger/metis_Missive.h 
-	messenger/metis_MissiveType.h 
-	messenger/metis_Messenger.h 
-	messenger/metis_MessengerRecipient.h 
-	)
-
-set(METIS_PROCESSOR_HEADERS
-	processor/metis_FibEntry.h 
-	processor/metis_FibEntryList.h 
-	processor/metis_MessageProcessor.h 
-	processor/metis_Tap.h 
-	processor/metis_HashTableFunction.h 
-	processor/metis_PIT.h 
-	processor/metis_FIB.h 
-	processor/metis_PitEntry.h 
-	processor/metis_MatchingRulesTable.h 
-	processor/metis_PITVerdict.h 
-	processor/metis_StandardPIT.h 
-	)
-
-set(METIS_STRATEGIES_HEADERS
-	strategies/metis_Strategy.h 
-	strategies/metis_StrategyImpl.h 
-	strategies/strategy_All.h 
-	)
-
-set(METIS_TLV_HEADERS
-	tlv/metis_TlvOps.h 
-	tlv/metis_Tlv.h 
-	tlv/metis_TlvName.h 
-	tlv/metis_TlvExtent.h 
-	tlv/metis_TlvNameCodec.h 
-	tlv/metis_TlvSchemaV0.h 
-	tlv/metis_TlvSchemaV1.h 
-	tlv/metis_TlvSkeleton.h
-	)
+source_group(config FILES ${METIS_CONFIG_HEADERS})
 
 set(METIS_CONFIG_SOURCE
 	config/metis_CommandLineInterface.c	
@@ -148,6 +72,47 @@ set(METIS_CONFIG_SOURCE
 	config/metisControl_UnsetDebug.c
 	)
 
+source_group(config FILES ${METIS_CONFIG_SOURCE})
+
+set(METIS_CONTENT_STORE_HEADERS
+	content_store/metis_ContentStoreEntry.h 
+	content_store/metis_ContentStoreInterface.h	
+	content_store/metis_LRUContentStore.h	
+	content_store/metis_TimeOrderedList.h	
+	content_store/metis_LruList.h	
+	)
+
+source_group(content_store FILES ${METIS_CONTENT_STORE_HEADERS})
+
+set(METIS_CONTENT_STORE_SOURCE  
+	content_store/metis_ContentStoreInterface.c	
+	content_store/metis_LRUContentStore.c	
+	content_store/metis_LruList.c 
+	content_store/metis_TimeOrderedList.c 
+	content_store/metis_ContentStoreEntry.c
+	)
+
+source_group(content_store FILES ${METIS_CONTENT_STORE_SOURCE})
+
+set(METIS_CORE_HEADERS
+	core/metis_ConnectionManager.h 
+	core/metis_Ticks.h 
+	core/metis_ConnectionList.h 
+	core/metis_ConnectionTable.h 
+	core/metis_Connection.h 
+	core/metis_Forwarder.h 
+	core/metis_Logger.h 
+	core/metis_Dispatcher.h 
+	core/metis_Message.h 
+	core/metis_MessagePacketType.h 
+	core/metis_NumberSet.h 
+	core/metis_StreamBuffer.h 
+	core/metis_ThreadedForwarder.h 
+	core/metis_System.h 
+	)
+
+source_group(core FILES ${METIS_CORE_HEADERS})
+
 set(METIS_CORE_SOURCE
 	core/metis_Connection.c 
 	core/metis_ConnectionList.c 
@@ -162,40 +127,31 @@ set(METIS_CORE_SOURCE
 	core/metis_ThreadedForwarder.c
 	)
 
-set(METIS_TLV_SOURCE
-	tlv/metis_Tlv.c 
-	tlv/metis_TlvExtent.c 
-	tlv/metis_TlvName.c 
-	tlv/metis_TlvSchemaV0.c 
-	tlv/metis_TlvSchemaV1.c 
-	tlv/metis_TlvSkeleton.c 
-	tlv/metis_TlvNameCodec.c
+source_group(core FILES ${METIS_CORE_SOURCE})
+
+set(METIS_IO_HEADERS
+	io/metis_HopByHopFragmenter.h 
+	io/metis_EtherConnection.h 
+	io/metis_TcpTunnel.h 
+	io/metis_AddressPair.h 
+	io/metis_IoOperations.h 
+	io/metis_Listener.h 
+	io/metis_ListenerSet.h 
+	io/metis_TcpListener.h 
+	io/metis_UdpTunnel.h 
+	io/metis_UdpConnection.h 
+	io/metis_UdpListener.h 
+	io/metis_EtherListener.h 
+	io/metis_GenericEther.h 
+	io/metis_LocalListener.h 
+	io/metis_StreamConnection.h 
+	io/metis_IPMulticastListener.h 
+	io/metis_Ethernet.h 
 	)
 
-if ( APPLE )
-  set(METIS_PLATFORM_MODULES 
-    platforms/darwin/metis_GenericEther.c 
-	platforms/darwin/metis_System.c
-	)
-endif()
+source_group(io FILES ${METIS_IO_HEADERS})
 
-if( ${CMAKE_SYSTEM_NAME} STREQUAL "Linux" )
-  set(METIS_PLATFORM_MODULES 
-    platforms/linux/metis_GenericEther.c 
-	platforms/linux/metis_System.c
-	)
-endif()
-
-set(METIS_SOURCE_FILES  
-	metis_About.c 
-	${METIS_CONFIG_SOURCE} 
-	${METIS_CORE_SOURCE} 
-	content_store/metis_ContentStoreInterface.c	
-	content_store/metis_LRUContentStore.c	
-	content_store/metis_LruList.c 
-	content_store/metis_TimeOrderedList.c 
-	content_store/metis_ContentStoreEntry.c 
-	${METIS_TLV_SOURCE} 
+set(METIS_IO_SOURCE
 	io/metis_AddressPair.c	
 	io/metis_EtherConnection.c 
 	io/metis_EtherListener.c 
@@ -210,11 +166,46 @@ set(METIS_SOURCE_FILES
 	io/metis_UdpConnection.c 
 	io/metis_UdpListener.c 
 	io/metis_UdpTunnel.c	 
+	)
+	
+source_group(io FILES ${METIS_IO_SOURCE})
+
+set(METIS_MESSENGER_HEADERS
+	messenger/metis_MissiveDeque.h 
+	messenger/metis_Missive.h 
+	messenger/metis_MissiveType.h 
+	messenger/metis_Messenger.h 
+	messenger/metis_MessengerRecipient.h 
+	)
+
+source_group(messenger FILES ${METIS_MESSENGER_HEADERS})
+
+set(METIS_MESSENGER_SOURCE  
 	messenger/metis_Messenger.c 
 	messenger/metis_MessengerRecipient.c 
 	messenger/metis_Missive.c  
-	messenger/metis_MissiveDeque.c  
-	${METIS_PLATFORM_MODULES} 
+	messenger/metis_MissiveDeque.c
+	)
+	
+source_group(messenger FILES ${METIS_MESSENGER_SOURCE})
+
+set(METIS_PROCESSOR_HEADERS
+	processor/metis_FibEntry.h 
+	processor/metis_FibEntryList.h 
+	processor/metis_MessageProcessor.h 
+	processor/metis_Tap.h 
+	processor/metis_HashTableFunction.h 
+	processor/metis_PIT.h 
+	processor/metis_FIB.h 
+	processor/metis_PitEntry.h 
+	processor/metis_MatchingRulesTable.h 
+	processor/metis_PITVerdict.h 
+	processor/metis_StandardPIT.h 
+	)
+
+source_group(processor FILES ${METIS_PROCESSOR_HEADERS})
+
+set(METIS_PROCESSOR_SOURCE  
 	processor/metis_HashTableFunction.c 
 	processor/metis_FIB.c 
 	processor/metis_FibEntry.c 
@@ -223,10 +214,77 @@ set(METIS_SOURCE_FILES
 	processor/metis_MessageProcessor.c 
 	processor/metis_PIT.c 
 	processor/metis_PitEntry.c 
-	processor/metis_StandardPIT.c 
+	processor/metis_StandardPIT.c
+	)
+	
+source_group(processor FILES ${METIS_PROCESSOR_SOURCE})
+
+set(METIS_STRATEGIES_HEADERS
+	strategies/metis_Strategy.h 
+	strategies/metis_StrategyImpl.h 
+	strategies/strategy_All.h 
+	)
+
+source_group(strategies FILES ${METIS_STRATEGIES_HEADERS})
+
+set(METIS_STRATEGIES_SOURCE  
 	strategies/strategy_All.c
 	)
 
+source_group(strategies FILES ${METIS_STRATEGIES_SOURCE})
+
+set(METIS_TLV_HEADERS
+	tlv/metis_TlvOps.h 
+	tlv/metis_Tlv.h 
+	tlv/metis_TlvName.h 
+	tlv/metis_TlvExtent.h 
+	tlv/metis_TlvNameCodec.h 
+	tlv/metis_TlvSchemaV0.h 
+	tlv/metis_TlvSchemaV1.h 
+	tlv/metis_TlvSkeleton.h
+	)
+
+source_group(tlv FILES ${METIS_TLV_HEADERS})
+
+set(METIS_TLV_SOURCE
+	tlv/metis_Tlv.c 
+	tlv/metis_TlvExtent.c 
+	tlv/metis_TlvName.c 
+	tlv/metis_TlvSchemaV0.c 
+	tlv/metis_TlvSchemaV1.c 
+	tlv/metis_TlvSkeleton.c 
+	tlv/metis_TlvNameCodec.c
+	)
+
+source_group(tlv FILES ${METIS_TLV_SOURCE})
+
+if ( APPLE )
+  set(METIS_PLATFORM_MODULES 
+    platforms/darwin/metis_GenericEther.c 
+	platforms/darwin/metis_System.c
+	)
+  source_group(platforms FILES ${METIS_PLATFORM_MODULES})
+endif()
+
+if( ${CMAKE_SYSTEM_NAME} STREQUAL "Linux" )
+  set(METIS_PLATFORM_MODULES 
+    platforms/linux/metis_GenericEther.c 
+	platforms/linux/metis_System.c
+	)
+endif()
+
+set(METIS_SOURCE_FILES  
+	metis_About.c 
+	${METIS_CONFIG_SOURCE} 
+	${METIS_CORE_SOURCE} 
+	${METIS_TLV_SOURCE}
+	${METIS_CONTENT_STORE_SOURCE}
+	${METIS_IO_SOURCE}
+	${METIS_MESSENGER_SOURCE}	
+	${METIS_PLATFORM_MODULES}
+	${METIS_PROCESSOR_SOURCE}
+	${METIS_STRATEGIES_SOURCE}
+	)
 
 add_library(metis         STATIC ${METIS_SOURCE_FILES})
 
