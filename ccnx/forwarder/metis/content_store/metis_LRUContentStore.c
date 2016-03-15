@@ -87,6 +87,7 @@ typedef struct metis_lru_contentstore_data {
 } _MetisLRUContentStore;
 
 
+
 static void
 _destroyIndexes(_MetisLRUContentStore *store)
 {
@@ -117,16 +118,31 @@ _destroyIndexes(_MetisLRUContentStore *store)
 }
 
 static void
-_destroy(MetisContentStoreInterface **storeImplPtr)
+_MetisContentStoreInterface_Destroy(MetisContentStoreInterface **storeImplPtr)
 {
     _MetisLRUContentStore *store = metisContentStoreInterface_GetPrivateData(*storeImplPtr);
 
-    _destroyIndexes(store);
-
-    metisLogger_Release(&store->logger);
+//    _destroyIndexes(store);
+    parcObject_Release((PARCObject **) &store);
 }
 
-parcObject_ExtendPARCObject(MetisContentStoreInterface, _destroy, NULL, NULL, NULL, NULL, NULL, NULL);
+static bool
+_MetisLRUContentStore_Destructor(_MetisLRUContentStore **storePtr)
+{
+    _MetisLRUContentStore *store = *storePtr;
+    
+    _destroyIndexes(store);
+    metisLogger_Release(&store->logger);
+    
+    return true;
+}
+
+parcObject_Override(_MetisLRUContentStore, PARCObject,
+                    .destructor = (PARCObjectDestructor *) _MetisLRUContentStore_Destructor
+                    );
+
+parcObject_ExtendPARCObject(MetisContentStoreInterface,
+                            _MetisContentStoreInterface_Destroy, NULL, NULL, NULL, NULL, NULL, NULL);
 
 static parcObject_ImplementAcquire(_metisLRUContentStore, MetisContentStoreInterface);
 static parcObject_ImplementRelease(_metisLRUContentStore, MetisContentStoreInterface);
@@ -499,12 +515,14 @@ metisLRUContentStore_Create(MetisContentStoreConfig *config, MetisLogger *logger
 
     assertNotNull(logger, "MetisLRUContentStore requires a non-NULL logger");
 
-    size_t allocationSize = sizeof(MetisContentStoreInterface) + sizeof(_MetisLRUContentStore);
+//    size_t allocationSize = sizeof(MetisContentStoreInterface) + sizeof(_MetisLRUContentStore);
 
-    storeImpl = parcObject_CreateAndClearInstanceImpl(allocationSize, &parcObject_MetaName(MetisContentStoreInterface));
+//    storeImpl = parcObject_CreateAndClearInstanceImpl(allocationSize, &parcObject_MetaName(MetisContentStoreInterface));
+    storeImpl = parcObject_CreateAndClearInstance(MetisContentStoreInterface);
 
     if (storeImpl != NULL) {
-        storeImpl->_privateData = (uint8_t *) storeImpl + sizeof(MetisContentStoreInterface);
+//        storeImpl->_privateData = (uint8_t *) storeImpl + sizeof(MetisContentStoreInterface);
+        storeImpl->_privateData = parcObject_CreateAndClearInstance(_MetisLRUContentStore);
 
         if (_metisLRUContentStore_Init(storeImpl->_privateData, config, logger)) {
             storeImpl->putContent = &_metisLRUContentStore_PutContent;
