@@ -122,7 +122,6 @@ _MetisContentStoreInterface_Destroy(MetisContentStoreInterface **storeImplPtr)
 {
     _MetisLRUContentStore *store = metisContentStoreInterface_GetPrivateData(*storeImplPtr);
 
-//    _destroyIndexes(store);
     parcObject_Release((PARCObject **) &store);
 }
 
@@ -515,13 +514,9 @@ metisLRUContentStore_Create(MetisContentStoreConfig *config, MetisLogger *logger
 
     assertNotNull(logger, "MetisLRUContentStore requires a non-NULL logger");
 
-//    size_t allocationSize = sizeof(MetisContentStoreInterface) + sizeof(_MetisLRUContentStore);
-
-//    storeImpl = parcObject_CreateAndClearInstanceImpl(allocationSize, &parcObject_MetaName(MetisContentStoreInterface));
     storeImpl = parcObject_CreateAndClearInstance(MetisContentStoreInterface);
 
     if (storeImpl != NULL) {
-//        storeImpl->_privateData = (uint8_t *) storeImpl + sizeof(MetisContentStoreInterface);
         storeImpl->_privateData = parcObject_CreateAndClearInstance(_MetisLRUContentStore);
 
         if (_metisLRUContentStore_Init(storeImpl->_privateData, config, logger)) {
