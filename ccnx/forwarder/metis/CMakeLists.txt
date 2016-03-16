@@ -295,7 +295,6 @@ set(metis_libraries
 foreach(lib ${metis_libraries})
   install(TARGETS ${lib} LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
   set_property(TARGET ${lib} PROPERTY C_STANDARD 99)
-  set_property(TARGET ${lib} PROPERTY INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 endforeach()
 
 add_subdirectory(test)

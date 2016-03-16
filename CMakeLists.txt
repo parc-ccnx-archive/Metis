@@ -19,7 +19,6 @@ include( detectCacheSize )
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 
-link_directories($ENV{CCNX_DEPENDENCIES}/lib)
 include_directories($ENV{CCNX_DEPENDENCIES}/include)
 set(OPENSSL_ROOT_DIR $ENV{CCNX_DEPENDENCIES})
 
@@ -62,6 +61,8 @@ set(METIS_LINK_LIBRARIES
   ${CCNX_COMMON_LIBRARIES}
   ${LIBPARC_LIBRARIES}
   )
+
+set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 
 macro(AddTest testFile)
   add_executable(${ARGV0} ${ARGV0}.c)
