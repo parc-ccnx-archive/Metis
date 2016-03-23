@@ -19,6 +19,8 @@ include( detectCacheSize )
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 
+include_directories(${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR}/ccnx/forwarder/metis)
+
 include_directories($ENV{CCNX_DEPENDENCIES}/include)
 set(OPENSSL_ROOT_DIR $ENV{CCNX_DEPENDENCIES})
 
@@ -43,10 +45,6 @@ include_directories(${CCNX_PORTAL_INCLUDE_DIRS})
 find_package ( Threads REQUIRED )
 
 find_package ( OpenSSL REQUIRED )
-
-include_directories(${PROJECT_BINARY_DIR}/ccnx/forwarder/metis
-                    ${PROJECT_SOURCE_DIR}
-					)
 
 find_package( Doxygen )
 
