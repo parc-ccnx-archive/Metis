@@ -825,4 +825,3 @@ metisMessage_SetExpiryTimeTicks(MetisMessage *message, uint64_t expiryTimeTicks)
     message->expiryTimeTicks = expiryTimeTicks;
     message->hasExpiryTimeTicks = true;
 }
-

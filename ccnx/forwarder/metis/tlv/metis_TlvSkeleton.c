@@ -111,7 +111,7 @@ metisTlvSkeleton_Parse(MetisTlvSkeleton *opaque, uint8_t *packet, MetisLogger *l
         case 0:
             _initialize(skeleton, &MetisTlvSchemaV0_Ops, packet, logger);
             return MetisTlvSchemaV0_Ops.parse(opaque);
-            
+
         case 1:
             _initialize(skeleton, &MetisTlvSchemaV1_Ops, packet, logger);
             return MetisTlvSchemaV1_Ops.parse(opaque);
@@ -434,4 +434,3 @@ metisTlvSkeleton_GetLogger(const MetisTlvSkeleton *opaque)
     _assertInvariants(skeleton);
     return skeleton->logger;
 }
-

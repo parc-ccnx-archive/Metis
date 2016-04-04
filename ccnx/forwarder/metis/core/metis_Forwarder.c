@@ -458,5 +458,3 @@ _keepalive_cb(int fd, PARCEventType what, void *user_data)
     assertTrue(what & PARCEventType_Timeout, "Got unexpected tick_cb: %d", what);
     // function is just a keepalive for Metis, does not do anything
 }
-
-

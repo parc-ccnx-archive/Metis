@@ -77,6 +77,7 @@ typedef struct __attribute__ ((__packed__)) metis_tlv_fixed_header {
 #define T_VALALG     0x0003
 #define T_VALPAYLOAD 0x0004
 #define T_HOPFRAG_PAYLOAD  0x0005
+#define T_MANIFEST   0x0006
 
 // inside interest
 #define T_KEYIDRES    0x0002
@@ -380,6 +381,7 @@ _parseMessage(const uint8_t *packet, size_t offset, size_t endMessage, struct tl
                     _parseInterestV1(packet, offset, endSubSection, skeleton);
                     break;
 
+                case T_MANIFEST:
                 case T_OBJECT:
                     _parseObjectV1(packet, offset, endSubSection, skeleton);
                     break;
