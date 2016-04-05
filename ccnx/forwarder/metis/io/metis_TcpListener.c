@@ -250,5 +250,3 @@ _metisTcpListener_OpsGetEncapType(const MetisListenerOps *ops)
 {
     return METIS_ENCAP_TCP;
 }
-
-
