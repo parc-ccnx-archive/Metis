@@ -168,7 +168,7 @@ _metisControlRemoveRoute_Execute(MetisCommandParser *parser, MetisCommandOps *op
     if (_validateSymbolicName(symbolicOrConnid) || _isNumber(symbolicOrConnid)) {
 
         const char *prefixString = parcList_GetAtIndex(args, 3);
-        CCNxName *prefix = ccnxName_CreateFromURI(prefixString);
+        CCNxName *prefix = ccnxName_CreateFromCString(prefixString);
         if (prefix == NULL) {
             printf("ERROR: could not parse prefix '%s'\n", prefixString);
             return MetisCommandReturn_Failure;
