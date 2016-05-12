@@ -1,16 +1,16 @@
 /*
  * Copyright (c) 2015, Xerox Corporation (Xerox) and Palo Alto Research Center, Inc (PARC)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * * Redistributions of source code must retain the above copyright
  *   notice, this list of conditions and the following disclaimer.
  * * Redistributions in binary form must reproduce the above copyright
  *   notice, this list of conditions and the following disclaimer in the
  *   documentation and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -21,7 +21,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * ################################################################################
  * #
  * # PATENT NOTICE
@@ -44,7 +44,7 @@
  * # Do not remove this header notification.  The contents of this section must be
  * # present in all distributions of the software.  You may only modify your own
  * # intellectual property statements.  Please provide contact information.
- * 
+ *
  * - Palo Alto Research Center, Inc
  * This software distribution does not grant any rights to patents owned by Palo
  * Alto Research Center, Inc (PARC). Rights to these patents are available via
@@ -130,16 +130,16 @@ _setupListener(MetisForwarder *metis, uint16_t port, MetisEncapType type)
 
     MetisListenerSet *listeners = metisForwarder_GetListenerSet(metis);
     MetisListenerOps *ops = NULL;
-    
+   
     switch (type) {
         case METIS_ENCAP_UDP:
             ops = metisUdpListener_CreateInet(metis, addr);
             break;
-            
+           
         case METIS_ENCAP_TCP:
             ops = metisTcpListener_CreateInet(metis, addr);
             break;
-            
+           
         case METIS_ENCAP_ETHER:
             ops = metisEtherListener_Create(metis, "fake0", port);
             break;
@@ -149,7 +149,7 @@ _setupListener(MetisForwarder *metis, uint16_t port, MetisEncapType type)
     }
 
     assertNotNull(ops, "Got null io operations");
-    
+   
     metisListenerSet_Add(listeners, ops);
 
     // crank the handle once
@@ -190,19 +190,19 @@ static void
 _commonSetup(const LongBowTestCase *testCase)
 {
     TestData *data = parcMemory_Allocate(sizeof(TestData));
-    
+   
     data->metis = metisForwarder_Create(NULL);
     metisLogger_SetLogLevel(metisForwarder_GetLogger(data->metis), MetisLoggerFacility_IO, PARCLogLevel_Debug);
     metisLogger_SetLogLevel(metisForwarder_GetLogger(data->metis), MetisLoggerFacility_Message, PARCLogLevel_Debug);
     metisLogger_SetLogLevel(metisForwarder_GetLogger(data->metis), MetisLoggerFacility_Core, PARCLogLevel_Debug);
     metisLogger_SetLogLevel(metisForwarder_GetLogger(data->metis), MetisLoggerFacility_Processor, PARCLogLevel_Debug);
-    
+   
     data->recipient = metisMessengerRecipient_Create(&testNotifierData, _testNotifier);
-    
+   
     // register a messenger callback so we know when the connections get setup
     MetisMessenger *messenger = metisForwarder_GetMessenger(data->metis);
     metisMessenger_Register(messenger, data->recipient);
-    
+   
     longBowTestCase_SetClipBoardData(testCase, data);
 }
 
@@ -210,7 +210,7 @@ static void
 _setupInetEncap(const LongBowTestCase *testCase, uint16_t port, MetisEncapType encap)
 {
     TestData *data = longBowTestCase_GetClipBoardData(testCase);
-    
+   
     _setupListener(data->metis, port, encap);
 
     // create a client
@@ -218,7 +218,7 @@ _setupInetEncap(const LongBowTestCase *testCase, uint16_t port, MetisEncapType e
         case METIS_ENCAP_UDP:
             data->fd_sender = _setupInetClient(data->metis, port, SOCK_DGRAM);
             break;
-            
+           
         case METIS_ENCAP_TCP:
             data->fd_sender = _setupInetClient(data->metis, port, SOCK_STREAM);
             break;
@@ -226,14 +226,14 @@ _setupInetEncap(const LongBowTestCase *testCase, uint16_t port, MetisEncapType e
         default:
             trapUnexpectedState("Unsupported encap type: %d", encap);
     }
-    
+   
     metisDispatcher_RunDuration(metisForwarder_GetDispatcher(data->metis), &((struct timeval) {0, 1000}));
 
 
     // send something to actually connect it, this is a good packet
     ssize_t nwritten = write(data->fd_sender, metisTestDataV1_Interest_NameA_Crc32c, sizeof(metisTestDataV1_Interest_NameA_Crc32c));
     assertTrue(nwritten == sizeof(metisTestDataV1_Interest_NameA_Crc32c), "Short write, expected %zu got %zd", sizeof(metisTestDataV1_Interest_NameA_Crc32c), nwritten);
-    
+   
     metisDispatcher_RunDuration(metisForwarder_GetDispatcher(data->metis), &((struct timeval) {0, 1000}));
 
     printf("sender port %u connection id = %u\n", port, testNotifierData.connectionid);
@@ -243,7 +243,7 @@ static void
 _commonTeardown(const LongBowTestCase *testCase)
 {
     TestData *data = longBowTestCase_GetClipBoardData(testCase);
-    
+   
     metisForwarder_Destroy(&data->metis);
     metisMessengerRecipient_Destroy(&data->recipient);
 
@@ -277,15 +277,15 @@ LONGBOW_TEST_FIXTURE_TEARDOWN(Global)
 LONGBOW_TEST_CASE(Global, udp)
 {
     _setupInetEncap(testCase, 44999, METIS_ENCAP_UDP);
-    
+   
     TestData *data = longBowTestCase_GetClipBoardData(testCase);
-    
+   
     for (int i = 0; metisTestDataV1_ErrorFrames[i].frame != NULL; i++) {
         const uint8_t *frame = metisTestDataV1_ErrorFrames[i].frame;
         const size_t length = metisTestDataV1_ErrorFrames[i].length;
-        
+       
         printf("Writing frame %d length %zu\n", i, length);
-        
+       
         const ssize_t nwritten = write(data->fd_sender, frame, length);
         assertTrue(nwritten == length, "Short write, expected %zu got %zd", length, nwritten);
         metisDispatcher_RunDuration(metisForwarder_GetDispatcher(data->metis), &((struct timeval) {0, 1000}));
@@ -295,32 +295,32 @@ LONGBOW_TEST_CASE(Global, udp)
 LONGBOW_TEST_CASE(Global, ether)
 {
     TestData *data = longBowTestCase_GetClipBoardData(testCase);
-    
+   
     _setupListener(data->metis, 0x0801, METIS_ENCAP_ETHER);
-    
+   
     // there's only 1 listener, so it's at index 0
     MetisListenerOps *listener = metisListenerSet_Get(metisForwarder_GetListenerSet(data->metis), 0);
     MetisGenericEther *ether = metisEtherListener_GetGenericEtherFromListener(listener);
     PARCBuffer *localAddressBuffer = metisGenericEther_GetMacAddress(ether);
     uint8_t *dmac = parcBuffer_Overlay(localAddressBuffer, 0);
     uint8_t smac[ETHER_ADDR_LEN] = { 1, 2, 3, 4, 5, 6 };
-    
+   
     // we're now ready to start receiving data.  We "send" data to the mock ethernet
     // by using the API to the mock GenericEther.
-    
+   
     for (int i = 0; metisTestDataV1_ErrorFrames[i].frame != NULL; i++) {
         const uint8_t *frame = metisTestDataV1_ErrorFrames[i].frame;
         const size_t length = metisTestDataV1_ErrorFrames[i].length;
-        
+       
         printf("Writing frame %d length %zu\n", i, length);
-        
+       
         PARCBuffer *buffer = mockGenericEther_createFrame(length, frame, dmac, smac, 0x0801);
         mockGenericEther_QueueFrame(ether, buffer);
         mockGenericEther_Notify(ether);
         parcBuffer_Release(&buffer);
-        
+       
         metisDispatcher_RunDuration(metisForwarder_GetDispatcher(data->metis), &((struct timeval) {0, 1000}));
-    }    
+    }   
 }
 
 
