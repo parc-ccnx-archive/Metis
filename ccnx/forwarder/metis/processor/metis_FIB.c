@@ -70,6 +70,8 @@
 #include <parc/algol/parc_Memory.h>
 #include <parc/algol/parc_TreeRedBlack.h>
 
+#include <parc/concurrent/parc_RWLock.h>
+
 #include <LongBow/runtime.h>
 
 // =====================================================
@@ -110,6 +112,8 @@ struct metis_fib {
     // KEY = tlvName, VALUE = FibEntry
     PARCHashCodeTable *tableByName;
 
+    PARCRWLock *fibLock;
+
     // KEY = tlvName.  We use a tree for the keys because that
     // has the same average insert and remove time.  The tree
     // is only used by GetEntries, which in turn is used by things
@@ -143,6 +147,8 @@ metisFIB_Create(MetisLogger *logger)
                                                      _hashTableFunction_FibEntryDestroyer,
                                                      initialSize);
 
+    fib->fibLock = parcRWLock_Create();
+
     fib->tableOfKeys =
         parcTreeRedBlack_Create(metisHashTableFunction_TlvNameCompare, NULL, NULL, NULL, NULL, NULL);
 
@@ -173,6 +179,7 @@ metisFIB_Destroy(MetisFIB **fibPtr)
     metisLogger_Release(&fib->logger);
     parcTreeRedBlack_Destroy(&fib->tableOfKeys);
     parcHashCodeTable_Destroy(&fib->tableByName);
+    parcRWLock_Release(&fib->fibLock);
     parcMemory_Deallocate((void **) &fib);
     *fibPtr = NULL;
 }
@@ -189,6 +196,7 @@ metisFIB_Match(MetisFIB *fib, const MetisMessage *interestMessage)
         MetisFibEntry *longestMatchingFibEntry = NULL;
 
         // because the FIB table is sparse, we need to scan all the name segments in order.
+        parcRWLock_ReadLock(fib->fibLock);
         for (size_t i = 0; i < metisTlvName_SegmentCount(tlvName); i++) {
             MetisTlvName *prefixName = metisTlvName_Slice(tlvName, i + 1);
             MetisFibEntry *fibEntry = parcHashCodeTable_Get(fib->tableByName, prefixName);
@@ -203,6 +211,7 @@ metisFIB_Match(MetisFIB *fib, const MetisMessage *interestMessage)
             }
             metisTlvName_Release(&prefixName);
         }
+        parcRWLock_Unlock(fib->fibLock);
 
         if (longestMatchingFibEntry != NULL) {
             // this returns a reference counted copy of the next hops
@@ -224,10 +233,12 @@ metisFIB_AddOrUpdate(MetisFIB *fib, CPIRouteEntry *route)
     unsigned interfaceIndex = cpiRouteEntry_GetInterfaceIndex(route);
     MetisTlvName *tlvName = metisTlvName_CreateFromCCNxName(ccnxName);
 
+    parcRWLock_WriteLock(fib->fibLock);
     MetisFibEntry *fibEntry = parcHashCodeTable_Get(fib->tableByName, tlvName);
     if (fibEntry == NULL) {
         fibEntry = _metisFIB_CreateFibEntry(fib, tlvName);
     }
+    parcRWLock_Unlock(fib->fibLock);
 
     metisFibEntry_AddNexthop(fibEntry, interfaceIndex);
 
@@ -249,6 +260,7 @@ metisFIB_Remove(MetisFIB *fib, CPIRouteEntry *route)
     unsigned interfaceIndex = cpiRouteEntry_GetInterfaceIndex(route);
     MetisTlvName *tlvName = metisTlvName_CreateFromCCNxName(ccnxName);
 
+    parcRWLock_WriteLock(fib->fibLock);
     MetisFibEntry *fibEntry = parcHashCodeTable_Get(fib->tableByName, tlvName);
     if (fibEntry != NULL) {
         metisFibEntry_RemoveNexthop(fibEntry, interfaceIndex);
@@ -261,6 +273,7 @@ metisFIB_Remove(MetisFIB *fib, CPIRouteEntry *route)
             routeRemoved = true;
         }
     }
+    parcRWLock_Unlock(fib->fibLock);
 
     metisTlvName_Release(&tlvName);
     return routeRemoved;
@@ -270,7 +283,11 @@ size_t
 metisFIB_Length(const MetisFIB *fib)
 {
     assertNotNull(fib, "Parameter fib must be non-null");
-    return parcHashCodeTable_Length(fib->tableByName);
+    size_t length;
+    parcRWLock_ReadLock(fib->fibLock);
+    length = parcHashCodeTable_Length(fib->tableByName);
+    parcRWLock_Unlock(fib->fibLock);
+    return length;
 }
 
 MetisFibEntryList *
@@ -279,11 +296,13 @@ metisFIB_GetEntries(const MetisFIB *fib)
     assertNotNull(fib, "Parameter fib must be non-null");
     MetisFibEntryList *list = metisFibEntryList_Create();
 
+    parcRWLock_ReadLock(fib->fibLock);
     PARCArrayList *values = parcTreeRedBlack_Values(fib->tableOfKeys);
     for (size_t i = 0; i < parcArrayList_Size(values); i++) {
         MetisFibEntry *original = (MetisFibEntry *) parcArrayList_Get(values, i);
         metisFibEntryList_Append(list, original);
     }
+    parcRWLock_Unlock(fib->fibLock);
     parcArrayList_Destroy(&values);
     return list;
 }
@@ -296,11 +315,13 @@ metisFIB_RemoveConnectionIdFromRoutes(MetisFIB *fib, unsigned connectionId)
     // NB: This is very inefficient.  We need a reverse-index from connectionId to FibEntry (case 814)
 
     // Walk the entire tree and remove the connection id from every entry.
+    parcRWLock_WriteLock(fib->fibLock);
     PARCArrayList *values = parcTreeRedBlack_Values(fib->tableOfKeys);
     for (size_t i = 0; i < parcArrayList_Size(values); i++) {
         MetisFibEntry *original = (MetisFibEntry *) parcArrayList_Get(values, i);
         metisFibEntry_RemoveNexthop(original, connectionId);
     }
+    parcRWLock_Unlock(fib->fibLock);
     parcArrayList_Destroy(&values);
 }
 
