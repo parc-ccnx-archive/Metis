@@ -268,7 +268,7 @@ LONGBOW_TEST_CASE(TlvOpsFunctions, _computeContentObjectHash)
     uint8_t *start = &metisTestDataV1_ContentObject_NameA_Crc32c[endHeaders];
     size_t length = endPacket - endHeaders;
 
-    PARCCryptoHasher *hasher = parcCryptoHasher_Create(PARC_HASH_SHA256);
+    PARCCryptoHasher *hasher = parcCryptoHasher_Create(PARCCryptoHashType_SHA256);
     parcCryptoHasher_Init(hasher);
     parcCryptoHasher_UpdateBytes(hasher, start, length);
 
