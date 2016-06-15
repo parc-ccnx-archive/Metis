@@ -298,7 +298,7 @@ _parseControlPlaneInterface(const uint8_t *packet, size_t offset, size_t endMess
 static PARCCryptoHash *
 _computeHash(const uint8_t *packet, size_t offset, size_t endMessage)
 {
-    PARCCryptoHasher *hasher = parcCryptoHasher_Create(PARC_HASH_SHA256);
+    PARCCryptoHasher *hasher = parcCryptoHasher_Create(PARCCryptoHashType_SHA256);
     parcCryptoHasher_Init(hasher);
     parcCryptoHasher_UpdateBytes(hasher, packet + offset, endMessage - offset);
     PARCCryptoHash *hash = parcCryptoHasher_Finalize(hasher);
