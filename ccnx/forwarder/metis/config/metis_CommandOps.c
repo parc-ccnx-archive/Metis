@@ -67,12 +67,10 @@
 #include <LongBow/runtime.h>
 #include <string.h>
 
-#ifndef _ANDROID_
 #ifdef HAVE_ERRNO_H
 #include <errno.h>
 #else
 extern int errno;
-#endif
 #endif
 
 #include <parc/algol/parc_Memory.h>

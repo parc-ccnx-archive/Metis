@@ -78,12 +78,10 @@
 
 #include <ccnx/forwarder/metis/config/metis_CommandParser.h>
 
-#ifndef _ANDROID_
 #ifdef HAVE_ERRNO_H
 #include <errno.h>
 #else
 extern int errno;
-#endif
 #endif
 
 struct metis_command_parser {
