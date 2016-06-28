@@ -258,20 +258,31 @@ set(METIS_TLV_SOURCE
 
 source_group(tlv FILES ${METIS_TLV_SOURCE})
 
-if ( APPLE )
-  set(METIS_PLATFORM_MODULES 
-    platforms/darwin/metis_GenericEther.c 
-	platforms/darwin/metis_System.c
-	)
-  source_group(platforms FILES ${METIS_PLATFORM_MODULES})
+if(DEFINED ENV{ANDROID_API})
+    message("... detected cross compile for $ENV{ANDROID_API_VERSION} ignoring tests")
+    set(METIS_PLATFORM_MODULES 
+      platforms/android/metis_GenericEther.c 
+      platforms/android/metis_System.c
+      platforms/android/ifaddrs.c
+     )
+    source_group(platforms FILES ${METIS_PLATFORM_MODULES})
+else()
+    if ( APPLE )
+      set(METIS_PLATFORM_MODULES 
+        platforms/darwin/metis_GenericEther.c 
+    	platforms/darwin/metis_System.c
+    	)
+      source_group(platforms FILES ${METIS_PLATFORM_MODULES})
+    endif()
+    
+    if( ${CMAKE_SYSTEM_NAME} STREQUAL "Linux" )
+      set(METIS_PLATFORM_MODULES 
+        platforms/linux/metis_GenericEther.c 
+    	platforms/linux/metis_System.c
+    	)
+    endif()
 endif()
 
-if( ${CMAKE_SYSTEM_NAME} STREQUAL "Linux" )
-  set(METIS_PLATFORM_MODULES 
-    platforms/linux/metis_GenericEther.c 
-	platforms/linux/metis_System.c
-	)
-endif()
 
 set(METIS_SOURCE_FILES  
 	metis_About.c 
@@ -297,13 +308,17 @@ foreach(lib ${metis_libraries})
   set_property(TARGET ${lib} PROPERTY C_STANDARD 99)
 endforeach()
 
-add_subdirectory(test)
-add_subdirectory(command-line)
-add_subdirectory(tlv/test)
-add_subdirectory(strategies/test)
-add_subdirectory(processor/test)
-add_subdirectory(messenger/test)
-add_subdirectory(io/test)
-add_subdirectory(core/test)
-add_subdirectory(content_store/test)
-add_subdirectory(config/test)
+if(DEFINED ENV{ANDROID_API})
+    message("... detected cross compile for $ENV{ANDROID_API_VERSION} ignoring tests")
+else()
+    add_subdirectory(test)
+    add_subdirectory(command-line)
+    add_subdirectory(tlv/test)
+    add_subdirectory(strategies/test)
+    add_subdirectory(processor/test)
+    add_subdirectory(messenger/test)
+    add_subdirectory(io/test)
+    add_subdirectory(core/test)
+    add_subdirectory(content_store/test)
+    add_subdirectory(config/test)
+endif()
