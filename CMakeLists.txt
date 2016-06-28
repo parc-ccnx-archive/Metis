@@ -17,16 +17,7 @@ include( CTest )
 include( version )
 include( detectCacheSize )
 
-if(DEFINED ENV{ANDROID_API})
-    message("... detected cross compile for $ENV{ANDROID_API_VERSION}")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -D_ANDROID_ -D_$ENV{ANDROID_API_VERSION}_")
-    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} $ENV{LDFLAGS}")
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} $ENV{LDFLAGS}")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} $ENV{LDFLAGS}")
-else()
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
-endif()
-
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 
 include_directories(${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR}/ccnx/forwarder/metis)
 
