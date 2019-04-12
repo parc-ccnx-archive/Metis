@@ -2,9 +2,13 @@ Metis
 =======
 A CCNx forwarder
 
+# Deprecated Code #
+This repository is no longer active.  See the [Community ICN](https://wiki.fd.io/view/Cicn) project
+for the latest code.  The [CICN Code Repository](https://github.com/FDio/cicn) should be used for all new projects.
+
 ## Quick Start ##
 ```
-$ git clone git@github.com:PARC/Metis.git Metis
+$ git clone git@github.com:parc-ccnx-archive/Metis.git Metis
 $ mkdir Metis.build
 $ cd Metis.build
 $ cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} ../Metis
@@ -21,7 +25,7 @@ Metis is a CCNx Forwarder.
 
 ### Distillery ###
 
-Metis is part of [CCNx Distillery](https://github.com/PARC/CCNx_Distillery). You may want to get the software via that distribution if you want to work on CCNx.
+Metis is part of [CCNx Distillery](https://github.com/parc-ccnx-archive/CCNx_Distillery). You may want to get the software via that distribution if you want to work on CCNx.
 
 ### Platforms ###
 
@@ -45,10 +49,10 @@ Basic dependencies:
 - OpenSSL
 - pthreads
 - Libevent
-- [LongBow](https://github.com/PARC/LongBow)
-- [Libparc](https://github.com/PARC/Libparc)
-- [Libccnx-common](https://github.com/PARC/Libccnx-common)
-- [Libccnx-transport-rta](https://github.com/PARC/Libccnx-transport-rta)
+- [LongBow](https://github.com/parc-ccnx-archive/LongBow)
+- [Libparc](https://github.com/parc-ccnx-archive/Libparc)
+- [Libccnx-common](https://github.com/parc-ccnx-archive/Libccnx-common)
+- [Libccnx-transport-rta](https://github.com/parc-ccnx-archive/Libccnx-transport-rta)
 
 
 Documentation dependencies:
@@ -62,7 +66,7 @@ Metis is built using cmake. You will need to have CMake 3.4 installed in order t
 
 ```
 Download Metis
-$ git clone git@github.com:PARC/Metis.git Metis
+$ git clone git@github.com:parc-ccnx-archive/Metis.git Metis
 
 Create build directory
 $ mkdir Metis.build
@@ -94,7 +98,7 @@ Metis is a set of binary executables that are used to run a CCNx forwarder insta
 
 ### Contact ###
 
-- [Metis GitHub](https://github.com/PARC/Metis)
+- [Metis GitHub](https://github.com/parc-ccnx-archive/Metis)
 - [CCNx Website](http://www.ccnx.org/)
 - [CCNx Mailing List](https://www.ccnx.org/mailman/listinfo/ccnx/)
 
