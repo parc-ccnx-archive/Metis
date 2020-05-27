@@ -116,8 +116,11 @@ LONGBOW_TEST_CASE(Global, metisControlRemoveRoute_Create)
 
 LONGBOW_TEST_FIXTURE(Local)
 {
+    LONGBOW_RUN_TEST_CASE(Local, metisControl_RemoveRoute_Execute_WrongArgCount);
+    LONGBOW_RUN_TEST_CASE(Local, metisControl_RemoveRoute_Execute_BadPrefix);
+    LONGBOW_RUN_TEST_CASE(Local, metisControl_RemoveRoute_Execute_Good);
+
     LONGBOW_RUN_TEST_CASE(Local, metisControl_Help_RemoveRoute_Execute);
-    LONGBOW_RUN_TEST_CASE(Local, metisControl_RemoveRoute_Execute);
 }
 
 LONGBOW_TEST_FIXTURE_SETUP(Local)
@@ -137,15 +140,51 @@ LONGBOW_TEST_FIXTURE_TEARDOWN(Local)
     return LONGBOW_STATUS_SUCCEEDED;
 }
 
+static MetisCommandReturn
+testRemoveRoute(const LongBowTestCase *testCase, int argc, const char *prefix, char *nexthop)
+{
+    TestData *data = longBowTestCase_GetClipBoardData(testCase);
+    metisControlState_SetDebug(data->state, true);
+
+    const char *argv[] = { "remove", "route", nexthop, prefix };
+    PARCList *args = parcList(parcArrayList_Create(NULL), PARCArrayListAsPARCList);
+    parcList_AddAll(args, argc, (void **) &argv[0]);
+
+    MetisCommandOps *ops = metisControlRemoveRoute_Create(data->state);
+
+    MetisCommandReturn result = ops->execute(data->state->parser, ops, args);
+    metisCommandOps_Destroy(&ops);
+    parcList_Release(&args);
+    return result;
+}
+
 LONGBOW_TEST_CASE(Local, metisControl_Help_RemoveRoute_Execute)
 {
     testHelpExecute(testCase, &metisControlRemoveRoute_HelpCreate, __func__, MetisCommandReturn_Success);
 }
 
-LONGBOW_TEST_CASE(Local, metisControl_RemoveRoute_Execute)
+LONGBOW_TEST_CASE(Local, metisControl_RemoveRoute_Execute_WrongArgCount)
 {
-    // Change to success once function implemented (case 157)
-    testHelpExecute(testCase, &metisControlRemoveRoute_Create, __func__, MetisCommandReturn_Failure);
+    MetisCommandReturn result = testRemoveRoute(testCase, 3, "lci:/foo", "100");
+
+    assertTrue(result == MetisCommandReturn_Failure,
+               "metisControl_AddRoute with wrong argc should return %d, got %d", MetisCommandReturn_Failure, result);
+}
+
+LONGBOW_TEST_CASE(Local, metisControl_RemoveRoute_Execute_BadPrefix)
+{
+    MetisCommandReturn result = testRemoveRoute(testCase, 4, "blah", "100");
+
+    assertTrue(result == MetisCommandReturn_Failure,
+               "metisControl_AddRoute with bad prefix should return %d, got %d", MetisCommandReturn_Failure, result);
+}
+
+LONGBOW_TEST_CASE(Local, metisControl_RemoveRoute_Execute_Good)
+{
+    MetisCommandReturn result = testRemoveRoute(testCase, 4, "lci:/foo", "100");
+
+    assertTrue(result == MetisCommandReturn_Success,
+               "metisControl_RemoveRoute should return %d, got %d", MetisCommandReturn_Success, result);
 }
 
 int
